@@ -10,13 +10,14 @@ import Foundation
 // MARK: - UsersPresenterProtocol
 
 protocol UsersPresenterProtocol: AnyObject {
-    init(model: ManagedModelProtocol, router: RouterProtocol)
+    init(model: ManagedModelProtocol, router: RouterProtocol?)
     var userInfo: [UserInfo] { get set }
+    var router: RouterProtocol? { get set }
 
     func saveName(name: String) //сохраняем имя
     func deleteUser(indexPath: IndexPath)// удаляем юзера
     func fetchUsersInfo()// приравниваем модель к модели
-    func showUserInfoViewController(userInfo: UserInfo?)// переход на userInfoVC
+    func showUserInfoViewController(by indexPath: IndexPath)// переход на userInfoVC
 }
 
 // MARK: - UsersPresenter
@@ -27,13 +28,16 @@ class UsersPresenter: UsersPresenterProtocol {
     var model: ManagedModelProtocol
     var router: RouterProtocol?
 
-    required init(model: ManagedModelProtocol, router: RouterProtocol) {
+    required init(model: ManagedModelProtocol, router: RouterProtocol?) {
         self.model = model
         self.router = router
+        fetchUsersInfo()
+        //userInfo = model.fetchUsers() ?? []
     }
 
     func saveName(name: String) {
         model.saveUsers(name: name)
+        //userInfo = model.fetchUsers() ?? []
     }
 
     func deleteUser(indexPath: IndexPath) {
@@ -44,8 +48,12 @@ class UsersPresenter: UsersPresenterProtocol {
         userInfo = model.fetchUsers() ?? []
     }
 
-    func showUserInfoViewController(userInfo: UserInfo?) {
-        router?.showInfoUserViewController(userInfo: userInfo)
+    func showUserInfoViewController(by indexPath: IndexPath) {
+        router?.showInfoUserViewController(userInfo: userInfo[indexPath.row])
     }
 
+//    func updateUserInfo(userInfo: UserInfo, name: String, birthDay: Date, gender: String) {
+//
+//        model.updateUsersInfo(userInfo: userInfo, name: name, birthDay: birthDay, gender: gender)
+//    }
 }

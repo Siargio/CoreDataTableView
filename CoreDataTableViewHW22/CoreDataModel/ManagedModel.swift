@@ -8,21 +8,25 @@
 import Foundation
 import CoreData
 
-protocol ManagedModelProtocol: AnyObject {
+protocol ManagedModelProtocol {
     func saveContext()
     func fetchUsers() -> [UserInfo]?
     func deleteUser(userInfo: UserInfo)
     func saveUsers(name: String)
+    func updateUsersInfo( userInfo: UserInfo,
+                          name: String?,
+                          birthDay: Date?,
+                          gender: String?)
 }
 
-final class ManagedModel: ManagedModelProtocol {
+class ManagedModel: ManagedModelProtocol {
 
     // MARK: - Core Data stack
 
     private let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "UserInfo")
     private lazy var context: NSManagedObjectContext = persistentContainer.viewContext
 
-    lazy var persistentContainer: NSPersistentContainer = {
+    private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "CoreDataTableViewHW22")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -31,10 +35,6 @@ final class ManagedModel: ManagedModelProtocol {
         })
         return container
     }()
-
-    var managedObject: UserInfo {//
-        UserInfo(entity: entityForName(entityName: UserInfo.identifier), insertInto: context)
-    }
 
     // MARK: - Entity
 
@@ -50,7 +50,6 @@ final class ManagedModel: ManagedModelProtocol {
     func saveUsers(name: String) {
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "UserInfo", in: context) else { return }
         let newUserInfo = UserInfo(entity: entityDescription, insertInto: context)
-        //let userInfo = UserInfo(context: context)
         newUserInfo.name = name
         saveContext()
     }
@@ -66,12 +65,44 @@ final class ManagedModel: ManagedModelProtocol {
     }
 
     func fetchUsers() -> [UserInfo]? {
-        guard let models = try? context.fetch(fetchRequest) as? [UserInfo] else { return [] }
-        return models
+        //        guard let models = try? context.fetch(fetchRequest) as? [UserInfo] else { return [] }
+        //        return models
+        //        let request: NSFetchRequest = UserInfo.fetchRequest()
+        //        do {
+        //            let result = try? self.context.fetch(request)
+        //            return result
+        //        }
+        do {
+            let models = try context.fetch(fetchRequest) as? [UserInfo]
+            return models
+        } catch {
+            print(error)
+            return nil
+        }
     }
 
     func deleteUser(userInfo: UserInfo) {
         context.delete(userInfo)
         saveContext()
     }
+
+    func updateUsersInfo(userInfo: UserInfo,
+                         name: String?,
+                         birthDay: Date?,
+                         gender: String?) {
+
+        userInfo.name = name
+        userInfo.birthDay = birthDay
+        userInfo.gender = gender
+        saveContext()
+    }
+
+    //    func updateProfile(user: NSManagedObject) {
+    //        guard context.hasChanges else { return }
+    //        do {
+    //            try context.save()
+    //        } catch let error as NSError {
+    //            print("Could not save. \(error), \(error.userInfo)")
+    //        }
+    //    }
 }

@@ -6,8 +6,15 @@
 //
 
 import UIKit
+protocol InfoUserInfoProtocol: AnyObject {
+    func saveData()
+}
 
-class UserInfoViewController: UIViewController {
+class UserInfoViewController: UIViewController, InfoUserInfoProtocol {
+
+    var presenter: UserInfoPresenterProtocol?
+    private var isActivity = true
+    private var gender: String?
 
     // MARK: - View
 
@@ -29,17 +36,40 @@ class UserInfoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationController()
+        notActivity()
+        setupActions()
     }
-
 }
 
 // MARK: - Settings
 
 extension UserInfoViewController {
 
-    func setupNavigationController() {
+    private func setupNavigationController() {
         navigationController?.navigationBar.tintColor = .black
         navigationItem.rightBarButtonItem = editButton
+    }
+
+    private func notActivity() {
+        userInfoView?.userNameTextField.isEnabled = false
+        userInfoView?.birthdayDatePicker.isEnabled = false
+        userInfoView?.genderControl.isEnabled = false
+    }
+
+    func saveData() {
+        print("aaaa")
+        presenter?.updateUsersInfo(name: userInfoView?.userNameTextField.text,
+                                   birthDay: userInfoView?.birthdayDatePicker.date,
+                                   gender: gender)
+        switch gender {
+        case Gender.male.rawValue:
+            userInfoView?.genderControl.selectedSegmentIndex = 0
+        case Gender.female.rawValue:
+            userInfoView?.genderControl.selectedSegmentIndex = 1
+        default:
+            break
+        }
     }
 }
 
@@ -48,6 +78,32 @@ extension UserInfoViewController {
 extension UserInfoViewController {
 
     @objc func editButtonAction() {
+        if isActivity {
+            userInfoView?.userNameTextField.isEnabled = true
+            userInfoView?.birthdayDatePicker.isEnabled = true
+            userInfoView?.genderControl.isEnabled = true
+            isActivity = false
+            editButton.title = "Save"
+        } else {
+            userInfoView?.userNameTextField.isEnabled = false
+            userInfoView?.birthdayDatePicker.isEnabled = false
+            userInfoView?.genderControl.isEnabled = false
+            isActivity = true
+            editButton.title = "Edit"
+            saveData()
+        }
+    }
+
+    func setupActions() {
+        userInfoView?.genderControl.addTarget(nil, action: #selector(segmentDidChange(_:)), for: .valueChanged)
+    }
+
+    @objc private func segmentDidChange(_ sender: UISegmentedControl) {
+        if userInfoView?.genderControl.selectedSegmentIndex == 0 {
+            gender = Gender.male.rawValue
+        } else {
+            gender = Gender.female.rawValue
+        }
     }
 }
 
