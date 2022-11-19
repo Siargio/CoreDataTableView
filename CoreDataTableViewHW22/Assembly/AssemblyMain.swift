@@ -9,7 +9,7 @@ import UIKit
 
 protocol AssemblyMainProtocol {
     func createUserModule(router: RouterProtocol) -> UIViewController
-    func createUserInfoModule(router: RouterProtocol, userInfo: UserInfo?) -> UIViewController
+    func createUserInfoModule(userInfo: UserInfo) -> UIViewController
 }
 
 class AssemblyMain: AssemblyMainProtocol {
@@ -22,11 +22,11 @@ class AssemblyMain: AssemblyMainProtocol {
         return view
     }
 
-    func createUserInfoModule(router: RouterProtocol, userInfo: UserInfo?) -> UIViewController {
+    func createUserInfoModule(userInfo: UserInfo) -> UIViewController {
         let view = UserInfoViewController()
         let model = ManagedModel()
-//        let presenter = UserInfoPresenterProtocol()
-//        view.presenter = presenter
+        let presenter = UserInfoPresenter(manager: model, userInfo: userInfo)
+        view.presenter = presenter
         return view
     }
 }

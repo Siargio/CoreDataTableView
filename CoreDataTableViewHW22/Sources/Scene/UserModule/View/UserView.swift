@@ -34,7 +34,7 @@ class UsersView: UIView {
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: CGRect.zero, style: .insetGrouped)
         tableView.backgroundColor = .systemGray5
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        //tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()

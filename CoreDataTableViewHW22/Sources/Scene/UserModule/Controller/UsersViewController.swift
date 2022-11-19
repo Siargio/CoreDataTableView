@@ -10,7 +10,6 @@ import UIKit
 class UsersViewController: UIViewController {
 
     var presenter: UsersPresenterProtocol?
-    var userInfo: [UserInfo] = []
 
     // MARK: - View
 
@@ -29,9 +28,14 @@ class UsersViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationController()
         setupView()
+        presenter?.fetchUsersInfo()
     }
 
-
+//        override func viewWillAppear(_ animated: Bool) {
+//            super.viewWillAppear(animated)
+//            presenter?.fetchUsersInfo()
+////            userView?.tableView.reloadData()
+//        }
 }
 
 // MARK: - Setups
@@ -57,45 +61,67 @@ extension UsersViewController {
     
     @objc func addUser() {
         if userView?.textFieldPrint.text != "" {
-            
+            let username = userView?.textFieldPrint.text ?? ""
+            presenter?.saveName(name: username)
+            presenter?.fetchUsersInfo()
+//            userView?.tableView.insertRows(at: [IndexPath(row: ((presenter?.userInfo.count)!) - 1, section: 0)],
+//                                           with: .automatic)
+            userView?.textFieldPrint.text = nil
             userView?.textFieldPrint.text = ""
         } else {
             let alert = UIAlertController(title: "Print name user", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "ok!", style: .cancel))
+            alert.addAction(UIAlertAction(title: "Ok!", style: .cancel))
             self.present(alert, animated: true)
         }
         userView?.tableView.reloadData()
     }
+    //    var userInfo: [UserInfo] {
+    //        presenter?.userInfo ?? []
+    //    }
 }
 
 // MARK: - UITableViewDataSource
 
 extension UsersViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        userInfo.count
+        presenter?.userInfo.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let person = userInfo[indexPath.row]
-        //cell.textLabel?.text = userInfo.name
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        let user = presenter?.userInfo[indexPath.row]
+        cell.textLabel?.text = user?.name
         cell.accessoryType = .disclosureIndicator
         return cell
     }
-
 }
 
 // MARK: - UITableViewDelegate
 
 extension UsersViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            presenter?.deleteUser(indexPath: indexPath)
+            presenter?.userInfo.remove(at: indexPath.row)
+            userView?.tableView.reloadData()
+        }
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let user = userInfo[indexPath.row]
-        let viewController = UserInfoViewController()
+        //let user = presenter?.userInfo[indexPath.row]
+        presenter?.showUserInfoViewController(by: indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
+// MARK: - UITextFieldDelegate
+
+extension UsersViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        addUser()
+        return true
+    }
+}
 // MARK: - Constants
 
 extension UsersViewController {
