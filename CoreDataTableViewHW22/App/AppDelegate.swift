@@ -21,8 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController = UINavigationController()
         let router = Router(navigationController: navigationController, assemblyBuilder: assembly)
         router.initialViewController()
-        //let viewController = UsersViewController()
-        //let navigationController = UINavigationController(rootViewController: viewController)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         return true

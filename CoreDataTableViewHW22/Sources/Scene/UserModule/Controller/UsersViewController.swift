@@ -31,11 +31,10 @@ class UsersViewController: UIViewController {
         presenter?.fetchUsersInfo()
     }
 
-//        override func viewWillAppear(_ animated: Bool) {
-//            super.viewWillAppear(animated)
-//            presenter?.fetchUsersInfo()
-////            userView?.tableView.reloadData()
-//        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        userView?.tableView.reloadData()
+    }
 }
 
 // MARK: - Setups
@@ -64,20 +63,14 @@ extension UsersViewController {
             let username = userView?.textFieldPrint.text ?? ""
             presenter?.saveName(name: username)
             presenter?.fetchUsersInfo()
-//            userView?.tableView.insertRows(at: [IndexPath(row: ((presenter?.userInfo.count)!) - 1, section: 0)],
-//                                           with: .automatic)
             userView?.textFieldPrint.text = nil
-            userView?.textFieldPrint.text = ""
         } else {
-            let alert = UIAlertController(title: "Print name user", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok!", style: .cancel))
+            let alert = UIAlertController(title: Strings.alertTitle, message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: Strings.alertActionTitle, style: .cancel))
             self.present(alert, animated: true)
         }
         userView?.tableView.reloadData()
     }
-    //    var userInfo: [UserInfo] {
-    //        presenter?.userInfo ?? []
-    //    }
 }
 
 // MARK: - UITableViewDataSource
@@ -108,7 +101,6 @@ extension UsersViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //let user = presenter?.userInfo[indexPath.row]
         presenter?.showUserInfoViewController(by: indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -128,5 +120,7 @@ extension UsersViewController {
 
     enum Strings {
         static let navigationTitle: String = "Users"
+        static let alertTitle: String = "Print name user"
+        static let alertActionTitle: String = "Ok!"
     }
 }

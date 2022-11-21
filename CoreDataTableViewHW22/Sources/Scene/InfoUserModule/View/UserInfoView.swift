@@ -44,6 +44,7 @@ class UserInfoView: UIView {
     lazy var userNameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = Strings.placeholder
+        textField.isEnabled = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -53,12 +54,12 @@ class UserInfoView: UIView {
         datePicker.preferredDatePickerStyle = .compact
         datePicker.maximumDate = Date.now
         datePicker.datePickerMode = .date
-        datePicker.isEnabled = true
+        datePicker.isEnabled = false
         return datePicker
     }()
 
     lazy var genderControl: UISegmentedControl = {
-        let segmentedItems = [Gender.female.rawValue, Gender.male.rawValue]
+        let segmentedItems = [Gender.male.rawValue, Gender.female.rawValue]
         let font = UIFont.systemFont(ofSize: Metric.systemFont)
         let segmentedControl = UISegmentedControl(items: segmentedItems)
         let selectedAttribute: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: UIColor.black]
@@ -66,7 +67,7 @@ class UserInfoView: UIView {
         segmentedControl.setTitleTextAttributes(selectedAttribute, for: .selected)
         segmentedControl.setTitleTextAttributes(normalAttribute, for: .normal)
         segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.isEnabled = true
+        segmentedControl.isEnabled = false
         return segmentedControl
     }()
 

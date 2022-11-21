@@ -32,12 +32,10 @@ class UsersPresenter: UsersPresenterProtocol {
         self.model = model
         self.router = router
         fetchUsersInfo()
-        //userInfo = model.fetchUsers() ?? []
     }
 
     func saveName(name: String) {
         model.saveUsers(name: name)
-        //userInfo = model.fetchUsers() ?? []
     }
 
     func deleteUser(indexPath: IndexPath) {
@@ -51,9 +49,4 @@ class UsersPresenter: UsersPresenterProtocol {
     func showUserInfoViewController(by indexPath: IndexPath) {
         router?.showInfoUserViewController(userInfo: userInfo[indexPath.row])
     }
-
-//    func updateUserInfo(userInfo: UserInfo, name: String, birthDay: Date, gender: String) {
-//
-//        model.updateUsersInfo(userInfo: userInfo, name: name, birthDay: birthDay, gender: gender)
-//    }
 }

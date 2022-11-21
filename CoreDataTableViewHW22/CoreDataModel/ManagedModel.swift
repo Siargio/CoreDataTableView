@@ -5,7 +5,6 @@
 //  Created by Sergio on 17.11.22.
 //
 
-import Foundation
 import CoreData
 
 protocol ManagedModelProtocol {
@@ -36,15 +35,6 @@ class ManagedModel: ManagedModelProtocol {
         return container
     }()
 
-    // MARK: - Entity
-
-    private func entityForName(entityName: String) -> NSEntityDescription {
-        guard let entityDescription = NSEntityDescription.entity(
-            forEntityName: entityName,
-            in: context) else { return NSEntityDescription() }
-        return entityDescription
-    }
-
     // MARK: - Core Data Saving support
 
     func saveUsers(name: String) {
@@ -67,6 +57,7 @@ class ManagedModel: ManagedModelProtocol {
     func fetchUsers() -> [UserInfo]? {
         //        guard let models = try? context.fetch(fetchRequest) as? [UserInfo] else { return [] }
         //        return models
+
         //        let request: NSFetchRequest = UserInfo.fetchRequest()
         //        do {
         //            let result = try? self.context.fetch(request)
@@ -96,13 +87,4 @@ class ManagedModel: ManagedModelProtocol {
         userInfo.gender = gender
         saveContext()
     }
-
-    //    func updateProfile(user: NSManagedObject) {
-    //        guard context.hasChanges else { return }
-    //        do {
-    //            try context.save()
-    //        } catch let error as NSError {
-    //            print("Could not save. \(error), \(error.userInfo)")
-    //        }
-    //    }
 }

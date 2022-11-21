@@ -18,6 +18,7 @@ extension UserInfo {
     @NSManaged public var name: String?
     @NSManaged public var birthDay: Date?
     @NSManaged public var gender: String?
+    //@NSManaged public var id = UUID().uuidString
 }
 
 extension UserInfo : Identifiable {
