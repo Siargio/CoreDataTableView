@@ -37,8 +37,8 @@ class UserInfoViewController: UIViewController, InfoUserInfoProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationController()
-        notActivity()
         setupActions()
+        loadUsenInfo()
     }
 }
 
@@ -51,17 +51,11 @@ extension UserInfoViewController {
         navigationItem.rightBarButtonItem = editButton
     }
 
-    private func notActivity() {
-        userInfoView?.userNameTextField.isEnabled = false
-        userInfoView?.birthdayDatePicker.isEnabled = false
-        userInfoView?.genderControl.isEnabled = false
-    }
+    func loadUsenInfo() {
+        userInfoView?.userNameTextField.text = presenter?.userInfo?.name
+        userInfoView?.birthdayDatePicker.date = presenter?.userInfo?.birthDay ?? Date()
+        gender = presenter?.userInfo?.gender
 
-    func saveData() {
-        print("aaaa")
-        presenter?.updateUsersInfo(name: userInfoView?.userNameTextField.text,
-                                   birthDay: userInfoView?.birthdayDatePicker.date,
-                                   gender: gender)
         switch gender {
         case Gender.male.rawValue:
             userInfoView?.genderControl.selectedSegmentIndex = 0
@@ -70,6 +64,12 @@ extension UserInfoViewController {
         default:
             break
         }
+    }
+
+    func saveData() {
+        presenter?.updateUsersInfo(name: userInfoView?.userNameTextField.text,
+                                   birthDay: userInfoView?.birthdayDatePicker.date,
+                                   gender: gender)
     }
 }
 
@@ -83,13 +83,15 @@ extension UserInfoViewController {
             userInfoView?.birthdayDatePicker.isEnabled = true
             userInfoView?.genderControl.isEnabled = true
             isActivity = false
-            editButton.title = "Save"
+            editButton.title = Strings.navigationButtonSave
+            editButton.tintColor = .red
         } else {
             userInfoView?.userNameTextField.isEnabled = false
             userInfoView?.birthdayDatePicker.isEnabled = false
             userInfoView?.genderControl.isEnabled = false
+            editButton.tintColor = .black
             isActivity = true
-            editButton.title = "Edit"
+            editButton.title = Strings.navigationButtonEdit
             saveData()
         }
     }
@@ -113,6 +115,6 @@ extension UserInfoViewController {
 
     enum Strings {
         static let navigationButtonEdit: String = "Edit"
+        static let navigationButtonSave: String = "Save"
     }
 }
-

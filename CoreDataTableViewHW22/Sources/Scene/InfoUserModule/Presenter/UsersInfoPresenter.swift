@@ -18,14 +18,13 @@ protocol UserInfoPresenterProtocol: AnyObject {
 // MARK: - UsersPresenter
 
 class UserInfoPresenter: UserInfoPresenterProtocol {
-//    let userName: String
+
     var userInfo: UserInfo?
     var manager: ManagedModelProtocol
 
     required init(manager: ManagedModelProtocol, userInfo: UserInfo) {
         self.manager = manager
         self.userInfo = userInfo
-        //self.userName = userName
     }
 
     func updateUsersInfo(name: String?,
@@ -38,8 +37,4 @@ class UserInfoPresenter: UserInfoPresenterProtocol {
                                 birthDay: birthDay,
                                 gender: gender)
     }
-
-//    func fetchUsersInfo() {
-//        userInfo = manager.fetchUsers()
-//    }
 }

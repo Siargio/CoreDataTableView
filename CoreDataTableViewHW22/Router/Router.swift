@@ -43,10 +43,6 @@ class Router: RouterProtocol { // роутер только для навига�
     }
 
     func showInfoUserViewController(userInfo: UserInfo?) { // инициализация второго контроллера userInfoViewControlle
-//        if let navigationController = navigationController {
-//            guard let userInfoViewController = assemblyBuilder?.createUserInfoModule(userInfo: userInfo!) else { return }
-//            navigationController.pushViewController(userInfoViewController, animated: true)
-//        }
         guard let navigationController = navigationController, let userInfo = userInfo else { return }
         guard let userInfoViewController = assemblyBuilder?.createUserInfoModule(userInfo: userInfo) else { return }
         navigationController.pushViewController(userInfoViewController, animated: true)

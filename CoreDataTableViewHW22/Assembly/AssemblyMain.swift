@@ -8,24 +8,27 @@
 import UIKit
 
 protocol AssemblyMainProtocol {
+    
+    var manager: ManagedModelProtocol { get set }
+
     func createUserModule(router: RouterProtocol) -> UIViewController
     func createUserInfoModule(userInfo: UserInfo) -> UIViewController
 }
 
 class AssemblyMain: AssemblyMainProtocol {
 
+    var manager: ManagedModelProtocol = ManagedModel()
+
     func createUserModule(router: RouterProtocol) -> UIViewController {
         let view = UsersViewController()
-        let model = ManagedModel()
-        let presenter = UsersPresenter(model: model, router: router)
+        let presenter = UsersPresenter(model: manager, router: router)
         view.presenter = presenter
         return view
     }
 
     func createUserInfoModule(userInfo: UserInfo) -> UIViewController {
         let view = UserInfoViewController()
-        let model = ManagedModel()
-        let presenter = UserInfoPresenter(manager: model, userInfo: userInfo)
+        let presenter = UserInfoPresenter(manager: manager, userInfo: userInfo)
         view.presenter = presenter
         return view
     }
