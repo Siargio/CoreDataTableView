@@ -6,7 +6,7 @@
 - CoreData
 # Gif
 
-
+https://user-images.githubusercontent.com/105241367/208470919-917a3862-6e19-4cbd-b9de-b376784df124.mp4
 
 # Description
 
