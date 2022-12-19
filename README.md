@@ -1,22 +1,22 @@
 # CoreDataTableViewHW22
-Technology stack
+# Technology stack
 
 UIKit
 MVP
 CoreData
-Gif
+# Gif
 
-user coreData gif
 
-Description
+
+# Description
 
 Building UI programmatically
 Using UITableView
 Passing data between ViewControllers
-Requirements
+# Requirements
 
-iOS 16.1
+iOS 16.1 
 Xcode 14.0
-Author
+# Author
 
 Siargio, winst73@gmail.com
