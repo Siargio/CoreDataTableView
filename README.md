@@ -15,7 +15,7 @@ https://user-images.githubusercontent.com/105241367/208470919-917a3862-6e19-4cbd
 - Passing data between ViewControllers
 # Requirements
 
-- iOS 16.1 
+- iOS 16.0 
 - Xcode 14.0
 # Author
 
